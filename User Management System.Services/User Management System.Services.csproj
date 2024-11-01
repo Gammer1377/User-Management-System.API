@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\User Management System.Data\User Management System.Data.csproj" />
+  </ItemGroup>
+
 </Project>

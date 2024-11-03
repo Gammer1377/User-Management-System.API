@@ -13,5 +13,11 @@ namespace User_Management_System.Entities.User
         public string Email { get; set; }
         public string Password { get; set; }
 
+        #region Relations
+
+        public ICollection<UserRole> UserRoles { get; set; }
+
+        #endregion
+
     }
 }

@@ -16,13 +16,18 @@ namespace User_Management_System.Data.Context
 
         }
 
+        #region DbSets
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        #endregion
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserFluentConfigs());
             modelBuilder.ApplyConfiguration(new RoleFluentConfigs());
+            modelBuilder.ApplyConfiguration(new UserRoleFluentConfigs());
         }
     }
 }

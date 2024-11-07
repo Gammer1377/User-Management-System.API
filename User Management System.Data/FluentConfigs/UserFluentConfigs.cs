@@ -13,8 +13,12 @@ namespace User_Management_System.Data.FluentConfigs
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.HasKey(b => b.Id);
+            builder.Property(b => b.Id).IsRequired().ValueGeneratedOnAdd();
             builder.Property(b => b.UserName).HasMaxLength(30).IsRequired();
             builder.Property(b => b.Password).IsRequired();
+            builder.HasData(new User { Id = 1,UserName = "MobinEfati",Email = "MobinEffati@gmail.com",Password = "12481632",CreateDate = DateTime.Now,LastUpdateDate = DateTime.Now},
+                new User { Id = 2,UserName = "ElhamAzizzade", Email = "ElhamAzizzade@gmail.com", Password = "12481632", CreateDate = DateTime.Now, LastUpdateDate = DateTime.Now });
         }
     }
 }

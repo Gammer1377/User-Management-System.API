@@ -54,7 +54,7 @@ namespace User_Management_System.API.Controllers
             return Ok();
         }
 
-        [HttpPost(nameof(id))]
+        [HttpPut(nameof(id))]
         public IActionResult UpdateUser(int id, UpdateUserDTO updateUserDto)
         {
             var user = _repository.GetByID(id);

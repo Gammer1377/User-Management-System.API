@@ -18,29 +18,40 @@ namespace User_Management_System.Data.Repositories
             _context = context;
         }
 
+        public void Delete(object Id)
+        {
+            TEntity EntityToDelete = _context.Set<TEntity>().Find(Id);
+            _context.Set<TEntity>().Remove(EntityToDelete);
+            SaveChanges();
+        }
+
         #region NormalMethods
         public IEnumerable<TEntity> GetAll()
         {
             return _context.Set<TEntity>().ToList();
         }
-        //public TEntity GetByID(int id)
-        //{
-         
-        //}
-        #endregion
-
-        #region AsyncMethods
-
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
-        {
-            return await _context.Set<TEntity>().ToListAsync();
+        public TEntity GetByID(int id)
+        { 
+            return _context.Set<TEntity>().Find(id);
         }
 
+        public void Insert(TEntity entity)
+        {
+            _context.Set<TEntity>().Add(entity);
+            SaveChanges();
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
+        public void Update(TEntity entity)
+        {
+            _context.Set<TEntity>().Entry(entity).State = EntityState.Modified;
+            SaveChanges();
+        }
         #endregion
-
-
-
-
 
     }
 }

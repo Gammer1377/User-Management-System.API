@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace User_Management_System.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -73,8 +73,8 @@ namespace User_Management_System.Data.Migrations
                 columns: new[] { "Id", "CreateDate", "LastUpdateDate", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2814), new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2814), "مدیریت" },
-                    { 2, new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2815), new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2816), "کاربر" }
+                    { 1, new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(1094), new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(1094), "مدیریت" },
+                    { 2, new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(1095), new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(1095), "کاربر" }
                 });
 
             migrationBuilder.InsertData(
@@ -82,8 +82,8 @@ namespace User_Management_System.Data.Migrations
                 columns: new[] { "Id", "CreateDate", "Email", "LastUpdateDate", "Password", "UserName" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2581), "MobinEffati@gmail.com", new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2588), "12481632", "MobinEfati" },
-                    { 2, new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2590), "ElhamAzizzade@gmail.com", new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2590), "12481632", "ElhamAzizzade" }
+                    { 1, new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(882), "MobinEffati@gmail.com", new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(890), "12481632", "MobinEfati" },
+                    { 2, new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(892), "ElhamAzizzade@gmail.com", new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(892), "12481632", "ElhamAzizzade" }
                 });
 
             migrationBuilder.InsertData(

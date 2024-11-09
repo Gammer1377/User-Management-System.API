@@ -18,13 +18,6 @@ namespace User_Management_System.Data.Repositories
             _context = context;
         }
 
-        public void Delete(object Id)
-        {
-            TEntity EntityToDelete = _context.Set<TEntity>().Find(Id);
-            _context.Set<TEntity>().Remove(EntityToDelete);
-            SaveChanges();
-        }
-
         #region NormalMethods
         public IEnumerable<TEntity> GetAll()
         {
@@ -49,6 +42,12 @@ namespace User_Management_System.Data.Repositories
         public void Update(TEntity entity)
         {
             _context.Set<TEntity>().Entry(entity).State = EntityState.Modified;
+            SaveChanges();
+        }
+        public void Delete(object Id)
+        {
+            TEntity EntityToDelete = _context.Set<TEntity>().Find(Id);
+            _context.Set<TEntity>().Remove(EntityToDelete);
             SaveChanges();
         }
         #endregion

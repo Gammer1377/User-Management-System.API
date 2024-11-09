@@ -12,8 +12,8 @@ using User_Management_System.Data.Context;
 namespace User_Management_System.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241107194518_Initial")]
-    partial class Initial
+    [Migration("20241108182918_InitialDB")]
+    partial class InitialDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,15 +49,15 @@ namespace User_Management_System.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreateDate = new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2814),
-                            LastUpdateDate = new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2814),
+                            CreateDate = new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(1094),
+                            LastUpdateDate = new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(1094),
                             Name = "مدیریت"
                         },
                         new
                         {
                             Id = 2,
-                            CreateDate = new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2815),
-                            LastUpdateDate = new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2816),
+                            CreateDate = new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(1095),
+                            LastUpdateDate = new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(1095),
                             Name = "کاربر"
                         });
                 });
@@ -97,18 +97,18 @@ namespace User_Management_System.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreateDate = new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2581),
+                            CreateDate = new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(882),
                             Email = "MobinEffati@gmail.com",
-                            LastUpdateDate = new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2588),
+                            LastUpdateDate = new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(890),
                             Password = "12481632",
                             UserName = "MobinEfati"
                         },
                         new
                         {
                             Id = 2,
-                            CreateDate = new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2590),
+                            CreateDate = new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(892),
                             Email = "ElhamAzizzade@gmail.com",
-                            LastUpdateDate = new DateTime(2024, 11, 7, 23, 15, 18, 742, DateTimeKind.Local).AddTicks(2590),
+                            LastUpdateDate = new DateTime(2024, 11, 8, 21, 59, 17, 821, DateTimeKind.Local).AddTicks(892),
                             Password = "12481632",
                             UserName = "ElhamAzizzade"
                         });

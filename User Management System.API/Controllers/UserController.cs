@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Core;
+using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using User_Management_System.Data.Context;
 using User_Management_System.Data.Contracts;
 using User_Management_System.Data.Repositories;
 using User_Management_System.Entities.DTOs.User;
 using User_Management_System.Entities.User;
+using User_Management_System.Entities.Validators;
 
 namespace User_Management_System.API.Controllers
 {
@@ -36,33 +40,45 @@ namespace User_Management_System.API.Controllers
         }
 
         [HttpPost]
-        public void AddUser(CreateUserDTO userDto)
+        public IActionResult AddUser(CreateUserDTO userDto)
         {
             Entities.User.User user = new Entities.User.User();
+            CreateUserDTOValidation CV = new CreateUserDTOValidation();
             user.UserName = userDto.UserName;
             user.Password = userDto.Password;
             user.Email = userDto.Email;
             user.CreateDate = DateTime.Now;
             user.LastUpdateDate = DateTime.Now;
-            _repository.Insert(user);
+            var validationResult = CV.Validate(userDto);
+            if (validationResult.IsValid)
+            {
+                _repository.Insert(user);
+                return Created();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, validationResult.Errors);
+            }
         }
 
         [HttpDelete(nameof(id))]
         public IActionResult DeleteUser(int id)
         {
-           _repository.Delete(id);
+            _repository.Delete(id);
             return Ok();
         }
 
         [HttpPut(nameof(id))]
         public IActionResult UpdateUser(int id, UpdateUserDTO updateUserDto)
         {
+            UpdateUserDTOValidation CV = new UpdateUserDTOValidation();
+            var validationResult = CV.Validate(updateUserDto);
             var user = _repository.GetByID(id);
             if (user == null)
             {
                 return NotFound();
             }
-            else
+            else if (validationResult.IsValid)
             {
                 user.UserName = updateUserDto.UserName;
                 user.Password = updateUserDto.Password;
@@ -70,6 +86,10 @@ namespace User_Management_System.API.Controllers
                 user.LastUpdateDate = DateTime.Now;
                 _repository.Update(user);
                 return Ok();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, validationResult.Errors);
             }
         }
 

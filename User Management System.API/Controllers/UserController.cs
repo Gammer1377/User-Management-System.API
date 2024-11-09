@@ -1,97 +1,84 @@
-﻿using Azure.Core;
-using FluentValidation;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 using User_Management_System.Data.Context;
 using User_Management_System.Data.Contracts;
-using User_Management_System.Data.Repositories;
 using User_Management_System.Entities.DTOs.User;
 using User_Management_System.Entities.User;
 using User_Management_System.Entities.Validators;
 
-namespace User_Management_System.API.Controllers
+namespace User_Management_System.API.Controllers;
+
+[Route("User")]
+[ApiController]
+[Authorize]
+public class UserController : ControllerBase
 {
-    [Route("User")]
-    [ApiController]
-    public class UserController : ControllerBase
+    private readonly IGenericRepository<User> _repository;
+
+    public UserController(IGenericRepository<User> repository, ApplicationDbContext context)
     {
-        IGenericRepository<User> _repository;
-        public UserController(IGenericRepository<User> repository, ApplicationDbContext context)
+        _repository = repository;
+    }
+
+    [HttpGet]
+    public IActionResult GetUsers()
+    {
+        return Ok(_repository.GetAll());
+    }
+
+    [HttpGet(nameof(id))]
+    public IActionResult GetUserById(int id)
+    {
+        if (id == null || id <= 0)
+            return BadRequest();
+        return Ok(_repository.GetByID(id));
+    }
+
+    [HttpPost]
+    public IActionResult AddUser(CreateUserDTO userDto)
+    {
+        var user = new User();
+        var CV = new CreateUserDTOValidation();
+        user.UserName = userDto.UserName;
+        user.Password = userDto.Password;
+        user.Email = userDto.Email;
+        user.CreateDate = DateTime.Now;
+        user.LastUpdateDate = DateTime.Now;
+        var validationResult = CV.Validate(userDto);
+        if (validationResult.IsValid)
         {
-            _repository = repository;
-        }
-        [HttpGet]
-        public IActionResult GetUsers()
-        {
-            return Ok(_repository.GetAll());
-        }
-        [HttpGet(nameof(id))]
-        public IActionResult GetUserById(int id)
-        {
-            if (id == null || id <= 0)
-            {
-                return BadRequest();
-            }
-            else
-            {
-                return Ok(_repository.GetByID(id));
-            }
+            _repository.Insert(user);
+            return Created();
         }
 
-        [HttpPost]
-        public IActionResult AddUser(CreateUserDTO userDto)
+        return StatusCode(StatusCodes.Status400BadRequest, validationResult.Errors);
+    }
+
+    [HttpDelete(nameof(id))]
+    public IActionResult DeleteUser(int id)
+    {
+        _repository.Delete(id);
+        return Ok();
+    }
+
+    [HttpPut(nameof(id))]
+    public IActionResult UpdateUser(int id, UpdateUserDTO updateUserDto)
+    {
+        var CV = new UpdateUserDTOValidation();
+        var validationResult = CV.Validate(updateUserDto);
+        var user = _repository.GetByID(id);
+        if (user == null) return NotFound();
+
+        if (validationResult.IsValid)
         {
-            Entities.User.User user = new Entities.User.User();
-            CreateUserDTOValidation CV = new CreateUserDTOValidation();
-            user.UserName = userDto.UserName;
-            user.Password = userDto.Password;
-            user.Email = userDto.Email;
-            user.CreateDate = DateTime.Now;
+            user.UserName = updateUserDto.UserName;
+            user.Password = updateUserDto.Password;
+            user.Email = updateUserDto.Email;
             user.LastUpdateDate = DateTime.Now;
-            var validationResult = CV.Validate(userDto);
-            if (validationResult.IsValid)
-            {
-                _repository.Insert(user);
-                return Created();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, validationResult.Errors);
-            }
-        }
-
-        [HttpDelete(nameof(id))]
-        public IActionResult DeleteUser(int id)
-        {
-            _repository.Delete(id);
+            _repository.Update(user);
             return Ok();
         }
 
-        [HttpPut(nameof(id))]
-        public IActionResult UpdateUser(int id, UpdateUserDTO updateUserDto)
-        {
-            UpdateUserDTOValidation CV = new UpdateUserDTOValidation();
-            var validationResult = CV.Validate(updateUserDto);
-            var user = _repository.GetByID(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            else if (validationResult.IsValid)
-            {
-                user.UserName = updateUserDto.UserName;
-                user.Password = updateUserDto.Password;
-                user.Email = updateUserDto.Email;
-                user.LastUpdateDate = DateTime.Now;
-                _repository.Update(user);
-                return Ok();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, validationResult.Errors);
-            }
-        }
-
+        return StatusCode(StatusCodes.Status400BadRequest, validationResult.Errors);
     }
 }

@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\User Management System.Services\User Management System.Services.csproj" />
+    <ProjectReference Include="..\User Management System.WebFrameWork\User Management System.WebFrameWork.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,10 +10,12 @@ using User_Management_System.Entities.DTOs.User;
 using User_Management_System.Entities.Validators;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
+using User_Management_System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 string template = "{Timestamp:yyyy/MM/dd - HH:mm:ss zzz} [{Level:u3}] {Message:lj} {NewLine} {Exception}";
 string path = "SeriLog/log.txt";
+
 #region SinkToConsole
 
 Log.Logger = new LoggerConfiguration()
@@ -24,9 +26,9 @@ Log.Logger = new LoggerConfiguration()
 
 #region SinkToFile
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.File(path, rollingInterval: RollingInterval.Day, fileSizeLimitBytes: 12000, rollOnFileSizeLimit: true, retainedFileCountLimit: 10,outputTemplate:template)
-    .CreateLogger();
+//Log.Logger = new LoggerConfiguration()
+//    .WriteTo.File(path, rollingInterval: RollingInterval.Day, fileSizeLimitBytes: 12000, rollOnFileSizeLimit: true, retainedFileCountLimit: 10,outputTemplate:template)
+//    .CreateLogger();
 
 #endregion
 
@@ -52,6 +54,7 @@ builder.Services.AddAuthentication("Bearer")
 
 #endregion
 
+builder.Services.ConfigurePersistenceService(builder.Configuration);
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -87,21 +90,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
-#region Context
-
-builder.Services.AddDbContext<ApplicationDbContext>(option =>
-{
-    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
-});
-
-#endregion
-
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
-builder.Services.AddScoped<IValidator<CreateUserDTO>, CreateUserDTOValidation>();
-builder.Services.AddScoped<IValidator<UpdateUserDTO>, UpdateUserDTOValidation>();
-builder.Services.AddScoped<IValidator<CreateRoleDTO>, CreateRoleDTOValidation>();
 
 var app = builder.Build();
 

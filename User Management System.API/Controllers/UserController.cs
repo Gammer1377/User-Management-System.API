@@ -13,9 +13,9 @@ namespace User_Management_System.API.Controllers;
 [Authorize]
 public class UserController : ControllerBase
 {
-    private readonly IGenericRepository<User> _repository;
+    private readonly IUserRepository _repository;
 
-    public UserController(IGenericRepository<User> repository, ApplicationDbContext context)
+    public UserController(IUserRepository repository)
     {
         _repository = repository;
     }
@@ -78,7 +78,6 @@ public class UserController : ControllerBase
             _repository.Update(user);
             return Ok();
         }
-
         return StatusCode(StatusCodes.Status400BadRequest, validationResult.Errors);
     }
 }

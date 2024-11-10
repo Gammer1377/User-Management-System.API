@@ -10,9 +10,9 @@ namespace User_Management_System.API.Controllers;
 [ApiController]
 public class RoleController : ControllerBase
 {
-    private readonly IGenericRepository<Role> _repository;
+    private readonly IRoleRepository _repository;
 
-    public RoleController(IGenericRepository<Role> repository)
+    public RoleController(IRoleRepository repository)
     {
         _repository = repository;
     }

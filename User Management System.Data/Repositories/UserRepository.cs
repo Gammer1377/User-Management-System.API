@@ -4,11 +4,11 @@ using User_Management_System.Entities.User;
 
 namespace User_Management_System.Data.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository : GenericRepository<User>,IUserRepository
 {
     private readonly ApplicationDbContext _context;
 
-    public UserRepository(ApplicationDbContext context)
+    public UserRepository(ApplicationDbContext context):base(context)
     {
         _context = context;
     }

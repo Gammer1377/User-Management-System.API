@@ -49,5 +49,50 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         SaveChanges();
     }
 
+
+    #endregion
+
+    #region AsyncMethods
+
+    public async Task<TEntity> GetAsync(int Id)
+    {
+        return await _context.Set<TEntity>().FindAsync(Id);
+    }
+
+    public async Task<IReadOnlyList<TEntity>> GetAllAsync()
+    {
+        return await _context.Set<TEntity>().ToListAsync();
+    }
+
+    public async Task<TEntity> InsertAsync(TEntity entity)
+    {
+        await _context.AddAsync(entity);
+        SaveChangesAsync();
+        return entity;
+    }
+
+    public async Task UpdateAsync(TEntity entity)
+    {
+        _context.Entry(entity).State= EntityState.Modified;
+        SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(TEntity entity)
+    { 
+        _context.Set<TEntity>().Remove(entity);
+        SaveChangesAsync();
+    }
+
+    public async Task<bool> ExistAsync(int Id)
+    {
+        var entity = await GetAsync(Id);
+        return entity != null;
+    }
+
+    public async Task SaveChangesAsync()
+    {
+       await _context.SaveChangesAsync();
+    }
+
     #endregion
 }

@@ -12,4 +12,16 @@ public interface IGenericRepository<TEntity> where TEntity : class
     void SaveChanges();
 
     #endregion
+
+    #region AsyncMethods
+
+    Task<TEntity> GetAsync(int Id);
+    Task<IReadOnlyList<TEntity>> GetAllAsync();
+    Task<TEntity> InsertAsync(TEntity entity);
+    Task UpdateAsync(TEntity entity);
+    Task DeleteAsync(TEntity entity);
+    Task<bool> ExistAsync(int Id);
+    Task SaveChangesAsync();
+
+    #endregion
 }

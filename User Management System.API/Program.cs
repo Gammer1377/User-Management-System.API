@@ -8,42 +8,30 @@ using User_Management_System.Data.Contracts;
 using User_Management_System.Data.Repositories;
 using User_Management_System.Entities.DTOs.User;
 using User_Management_System.Entities.Validators;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 
 var builder = WebApplication.CreateBuilder(args);
+string template = "{Timestamp:yyyy/MM/dd - HH:mm:ss zzz} [{Level:u3}] {Message:lj} {NewLine} {Exception}";
+string path = "SeriLog/log.txt";
+#region SinkToConsole
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-#region Context
-
-builder.Services.AddDbContext<ApplicationDbContext>(option =>
-{
-    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
-});
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+    .CreateLogger();
 
 #endregion
 
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
-builder.Services.AddScoped<IValidator<CreateUserDTO>, CreateUserDTOValidation>();
-builder.Services.AddScoped<IValidator<UpdateUserDTO>, UpdateUserDTOValidation>();
-builder.Services.AddScoped<IValidator<CreateRoleDTO>, CreateRoleDTOValidation>();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme."
-    });
-});
+#region SinkToFile
 
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File(path, rollingInterval: RollingInterval.Day, fileSizeLimitBytes: 12000, rollOnFileSizeLimit: true, retainedFileCountLimit: 10,outputTemplate:template)
+    .CreateLogger();
+
+#endregion
+
+builder.Host.UseSerilog();
+// Add services to the container.
 #region JWT
 
 builder.Services.AddAuthentication("Bearer")
@@ -64,6 +52,57 @@ builder.Services.AddAuthentication("Bearer")
 
 #endregion
 
+builder.Services.AddAuthorization();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "UserManagementSystem",
+        Version = "V1"
+    });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter Token"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+         {
+         new OpenApiSecurityScheme
+         {
+             Reference = new OpenApiReference
+             {
+                 Type = ReferenceType.SecurityScheme,
+                 Id = "Bearer"
+             }
+
+        },
+         new string[]{ }
+        }
+    });
+});
+
+#region Context
+
+builder.Services.AddDbContext<ApplicationDbContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+});
+
+#endregion
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+builder.Services.AddScoped<IValidator<CreateUserDTO>, CreateUserDTOValidation>();
+builder.Services.AddScoped<IValidator<UpdateUserDTO>, UpdateUserDTOValidation>();
+builder.Services.AddScoped<IValidator<CreateRoleDTO>, CreateRoleDTOValidation>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -75,12 +114,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-
-app.UseAuthorization();
-
 app.MapControllers();
 
 app.UseRouting();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.Run();

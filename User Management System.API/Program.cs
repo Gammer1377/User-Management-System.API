@@ -1,15 +1,8 @@
-using System.Text;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using User_Management_System.Data.Context;
-using User_Management_System.Data.Contracts;
-using User_Management_System.Data.Repositories;
-using User_Management_System.Entities.DTOs.User;
-using User_Management_System.Entities.Validators;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
+using System.Text;
 using User_Management_System.Data;
 
 var builder = WebApplication.CreateBuilder(args);

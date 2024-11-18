@@ -10,7 +10,6 @@ namespace User_Management_System.API.Controllers;
 
 [Route("User")]
 [ApiController]
-[Authorize]
 public class UserController : ControllerBase
 {
     private readonly IUserRepository _repository;
@@ -57,7 +56,8 @@ public class UserController : ControllerBase
     [HttpDelete(nameof(id))]
     public IActionResult DeleteUser(int id)
     {
-        _repository.Delete(id);
+        var user=_repository.GetByID(id);
+        _repository.DeleteAsync(user);
         return Ok();
     }
 

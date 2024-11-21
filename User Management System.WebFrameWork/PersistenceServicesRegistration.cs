@@ -29,9 +29,8 @@ namespace User_Management_System.Data
             service.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             service.AddScoped<IUserRepository, UserRepository>();
             service.AddScoped<IRoleRepository, RoleRepository>();
-            service.AddScoped<IValidator<CreateUserDTO>, CreateUserDTOValidation>();
-            service.AddScoped<IValidator<UpdateUserDTO>, UpdateUserDTOValidation>();
-            service.AddScoped<IValidator<CreateRoleDTO>, CreateRoleDTOValidation>();
+            service.AddScoped<IValidator<CreateUpdateUserDTO>, CreateUpdateUserDTOValidation>();
+            service.AddScoped<IValidator<CreateUpdateRoleDTO>, CreateUpdateRoleDTOValidation>();
 
             #endregion
 

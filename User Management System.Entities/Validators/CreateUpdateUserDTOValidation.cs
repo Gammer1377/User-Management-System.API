@@ -3,9 +3,9 @@ using User_Management_System.Entities.DTOs.User;
 
 namespace User_Management_System.Entities.Validators;
 
-public class CreateUserDTOValidation : AbstractValidator<CreateUserDTO>
+public class CreateUpdateUserDTOValidation : AbstractValidator<CreateUpdateUserDTO>
 {
-    public CreateUserDTOValidation()
+    public CreateUpdateUserDTOValidation()
     {
         RuleFor(p => p.Email).EmailAddress().WithMessage("Please Enter Valid Email").NotEmpty()
             .WithMessage("Email Address Cant Be Empty");

@@ -32,10 +32,10 @@ public class RoleController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult AddRole(CreateRoleDTO roleDto)
+    public IActionResult AddRole(CreateUpdateRoleDTO roleDto)
     {
         var Role = new Role();
-        var CV = new CreateRoleDTOValidation();
+        var CV = new CreateUpdateRoleDTOValidation();
         Role.Name = roleDto.Name;
         Role.CreateDate = DateTime.Now;
         Role.LastUpdateDate = DateTime.Now;
@@ -57,9 +57,9 @@ public class RoleController : ControllerBase
     }
 
     [HttpPut]
-    public IActionResult UpdateRole(int id, UpdateRoleDTO updateRoleDto)
+    public IActionResult UpdateRole(int id, CreateUpdateRoleDTO updateRoleDto)
     {
-        var CV = new UpdateRoleDTOValidation();
+        var CV = new CreateUpdateRoleDTOValidation();
         var validationResult = CV.Validate(updateRoleDto);
         var role = _repository.GetByID(id);
         if (role == null) return NotFound();

@@ -1,6 +1,6 @@
 ﻿namespace User_Management_System.Entities.DTOs.User;
 
-public class CreateUserDTO
+public class CreateUpdateUserDTO
 {
     public string UserName { get; set; }
     public string Email { get; set; }

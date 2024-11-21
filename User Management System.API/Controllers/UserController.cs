@@ -34,10 +34,10 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult AddUser(CreateUserDTO userDto)
+    public IActionResult AddUser(CreateUpdateUserDTO userDto)
     {
         var user = new User();
-        var CV = new CreateUserDTOValidation();
+        var CV = new CreateUpdateUserDTOValidation();
         user.UserName = userDto.UserName;
         user.Password = userDto.Password;
         user.Email = userDto.Email;
@@ -62,9 +62,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPut(nameof(id))]
-    public IActionResult UpdateUser(int id, UpdateUserDTO updateUserDto)
+    public IActionResult UpdateUser(int id, CreateUpdateUserDTO updateUserDto)
     {
-        var CV = new UpdateUserDTOValidation();
+        var CV = new CreateUpdateUserDTOValidation();
         var validationResult = CV.Validate(updateUserDto);
         var user = _repository.GetByID(id);
         if (user == null) return NotFound();

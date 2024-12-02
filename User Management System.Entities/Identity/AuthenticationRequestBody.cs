@@ -1,4 +1,4 @@
-﻿namespace User_Management_System.Entities.DTOs;
+﻿namespace User_Management_System.Entities.Identity;
 
 public class AuthenticationRequestBody
 {

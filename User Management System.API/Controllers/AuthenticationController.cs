@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using User_Management_System.Data.Contracts;
-using User_Management_System.Entities.DTOs;
+using User_Management_System.Entities.Identity;
 using User_Management_System.Entities.User;
 
 namespace User_Management_System.API.Controllers;

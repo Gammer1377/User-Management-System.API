@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using User_Management_System.Data.Contracts;
 using User_Management_System.Entities.DTOs.User;
 using User_Management_System.Entities.User;
@@ -8,6 +9,7 @@ namespace User_Management_System.API.Controllers;
 
 [Route("Role")]
 [ApiController]
+[Authorize]
 public class RoleController : ControllerBase
 {
     private readonly IRoleRepository _repository;
